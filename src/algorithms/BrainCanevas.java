@@ -35,7 +35,7 @@ public class BrainCanevas extends Brain {
 			endTaskDirection=0;
 		} else {
 //			endTaskDirection = (instanceNumber == 5) ? Math.PI*0.5  : -Math.PI*0.5;
-			moving = 401;
+			moving = 801;
 		}
 		turnRight=(endTaskDirection>0);
 		endTaskDirection+=getHeading();	
@@ -54,7 +54,7 @@ public class BrainCanevas extends Brain {
 				return;				
 			}
 		}
-		if (moving > 400) {
+		if (moving > 500) {
 			//change direction			
 			if (isHeading(endTaskDirection)) {
 				moving = 0;
@@ -121,6 +121,9 @@ public class BrainCanevas extends Brain {
 		} else {
 			moving++;
 			move();
+			if (instanceNumber != 5 && instanceNumber != 4 && moving % 2 == 0 && moveTimes >= 2 && moveTimes < 5) {
+				fire(getHeading());	
+			}
 		}
 		if (instanceNumber != 5 && instanceNumber != 4) {
 			shot();			

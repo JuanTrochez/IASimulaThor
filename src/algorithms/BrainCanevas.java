@@ -34,7 +34,7 @@ public class BrainCanevas extends Brain {
 		if (instanceNumber != 5 && instanceNumber != 4) {
 			endTaskDirection=0;
 		} else {
-			endTaskDirection = (instanceNumber == 5) ? Math.PI*0.5  : -Math.PI*0.5;
+//			endTaskDirection = (instanceNumber == 5) ? Math.PI*0.5  : -Math.PI*0.5;
 			moving = 401;
 		}
 		turnRight=(endTaskDirection>0);

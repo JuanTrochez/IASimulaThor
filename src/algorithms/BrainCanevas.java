@@ -20,11 +20,12 @@ import characteristics.Parameters;
 public class BrainCanevas extends Brain {
   
 	private static final double HEADINGPRECISION = 0.01*Math.PI;
-	private static int totalInstance = 0;
-	private double lastSeenDirection,fireCounter;
-	private int instanceNumber, moving;
-	private double endTaskDirection;
-	private boolean turnRight;
+	private static int totalInstance = 0/*total of my fellows*/;
+	private double lastSeenDirection/*the last direction seen by my fellow*/,fireCounter/*duration of the shoot*/;
+	private int instanceNumber/*the no of the cyclope*/, moving/*current position*/;
+	private double endTaskDirection/*when we finish to move in a direction*/;
+	private boolean turnRight,turnLeft;
+	
 	private int moveTimes;
 	public BrainCanevas() { super(); }
 
@@ -58,24 +59,25 @@ public class BrainCanevas extends Brain {
 				return;				
 			}
 		}
-		if (moving > 400) {
+		if (moving > 180) {
 			//change direction			
 			if (isHeading(endTaskDirection)) {
 				moving = 0;
 				moveTimes++;
 				endTaskDirection= (moveTimes > 5) ? (Math.random()-0.5)*2*Math.PI : 0;
 				if (moveTimes == 3 || moveTimes == 4) {
-					fireCounter = 500;
+					fireCounter = 900;
 					switch (instanceNumber) {
 					case 1:
-						lastSeenDirection = (moveTimes == 3) ? 0 : (Math.PI)/8;	
+						lastSeenDirection = (moveTimes == 3) ? 0 : (Math.PI)/4;	
 						break;
 					case 2:
-//						lastSeenDirection = 0;							
+//						lastSeenDirection = 0;	
+						shot();
 						break;
 					case 3:			
 //						lastSeenDirection = 0;	
-						lastSeenDirection = (moveTimes == 3) ? 0 : -(Math.PI)/8;	
+						lastSeenDirection = (moveTimes == 3) ? 0 : -(Math.PI)/4;	
 						break;
 
 					default:
@@ -86,27 +88,76 @@ public class BrainCanevas extends Brain {
 					switch (instanceNumber) {
 					case 1:
 						endTaskDirection = (moveTimes == 4) ? 0 : (Math.PI)/2;
+						turnRight=(endTaskDirection>0);
+						endTaskDirection+=getHeading();	
+						move();
+						
 						break;
 					case 2:
-						endTaskDirection= 0;						
+						//endTaskDirection= 0;						
+						shot();
+						
 						break;
 					case 3:			
 						endTaskDirection = (moveTimes == 4) ? 0 : -(Math.PI)/2;			
+						turnRight=(endTaskDirection>0);
+						endTaskDirection+=getHeading();	
+						move();
+						
 						break;
 
 					default:
 						break;
-					}					
+					}
+				} else if  (moveTimes == 4) {
+					switch (instanceNumber) {
+						case 1:			
+							endTaskDirection = (moveTimes == 4) ? 0 : -(Math.PI)/2;			
+							turnRight=(endTaskDirection>0);
+							endTaskDirection+=getHeading();	
+							move();
+							shot();
+						break;
+	
+						case 2:			
+							endTaskDirection = (moveTimes == 4) ? 0 : -(Math.PI)/2;			
+							turnRight=(endTaskDirection>0);
+							endTaskDirection+=getHeading();	
+							move();
+							shot();
+						
+						case 3:
+							endTaskDirection = (moveTimes == 4) ? 0 : -(Math.PI)/2;			
+							turnRight=(endTaskDirection>0);
+							endTaskDirection+=getHeading();	
+							move();
+							shot();
+						
+						default:
+							break;
+				}
+					
+					
+				
+					
+					
 				} else if  (moveTimes < 5) {
 					switch (instanceNumber) {
 					case 1:
+						turnRight=(endTaskDirection>0);
+						endTaskDirection+=getHeading();
 						endTaskDirection = -(Math.PI)/2;
+						turnRight=(endTaskDirection>0);
+						endTaskDirection+=getHeading();	
+						move();
 						break;
 					case 2:
 						endTaskDirection= 0;						
 						break;
 					case 3:			
-						endTaskDirection= Math.PI/2;			
+						endTaskDirection= Math.PI/2;
+						
+						move();
 						break;
 
 					default:
@@ -127,9 +178,10 @@ public class BrainCanevas extends Brain {
 			move();
 		}
 		if (instanceNumber != 5 && instanceNumber != 4) {
-			shot();			
+			shot();	
+			
 		}
-
+		
 
 	}
 	
@@ -158,6 +210,7 @@ public class BrainCanevas extends Brain {
 					endTaskDirection+=getHeading();	
 					
 				}
+				fire(r.getObjectDirection());
 			}
 		}
 	}

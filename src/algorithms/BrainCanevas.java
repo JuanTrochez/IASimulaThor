@@ -199,11 +199,10 @@ public class BrainCanevas extends Brain {
 				fire(r.getObjectDirection());
 				lastSeenDirection = r.getObjectDirection();
 				fireCounter = 500;
-				if (moveTimes > 5) {
+				if (moveTimes > 15) {
 					endTaskDirection = lastSeenDirection;
 					turnRight=(endTaskDirection>0);
 					endTaskDirection+=getHeading();	
-
 				}
 			}
 		}
